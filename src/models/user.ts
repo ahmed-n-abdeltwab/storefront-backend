@@ -4,13 +4,7 @@ import bcrypt from 'bcrypt';
 const saltRounds = process.env.SALT_ROUNDS ?? '10';
 const pepper = process.env.BCRYPT_PASSWORD;
 
-export type User = {
-	id?: number;
-	username: string;
-	firstname: string;
-	lastname: string;
-	password: string;
-};
+import { User } from '../types/user';
 
 export class UserStore {
 	async index(): Promise<User[]> {
@@ -20,10 +14,10 @@ export class UserStore {
 			const sql = 'SELECT * FROM Users';
 
 			const result = await conn.query(sql);
-
+			const users: User[] = result.rows;
 			conn.release();
 
-			return result.rows;
+			return users;
 		} catch (err) {
 			throw new Error(`unable get users: ${err}`);
 		}
@@ -36,9 +30,11 @@ export class UserStore {
 			const conn = await Pool.connect();
 
 			const result = await conn.query(sql, [id]);
-			const user = result.rows[0];
+
+			const user: User = result.rows[0];
 			conn.release();
 			if (!user) throw new Error('User not found');
+
 			return user;
 		} catch (err) {
 			throw new Error(`unable show user ${id}: ${err}`);
@@ -63,7 +59,7 @@ export class UserStore {
 				u.lastname,
 				hash,
 			]);
-			const user = result.rows[0];
+			const user: User = result.rows[0];
 
 			conn.release();
 
@@ -118,16 +114,24 @@ export class UserStore {
 	}
 
 	async authenticate(id: string, password: string): Promise<User> {
-		const conn = await Pool.connect();
-		const sql = 'SELECT * FROM Users WHERE id=($1)';
+		try {
+			const conn = await Pool.connect();
+			const sql = 'SELECT * FROM Users WHERE id=($1)';
 
-		const result = await conn.query(sql, [id]);
-		if (!result.rows.length) throw new Error(`not found user (${id})`);
-		const user = result.rows[0];
+			const result = await conn.query(sql, [id]);
 
-		if (!bcrypt.compareSync(password + pepper, user.password))
-			throw new Error(`wrong user (${id})`);
+			const user:User = result.rows[0];
 
-		return user;
+			conn.release();
+
+			if (!user) throw new Error('User not found');
+
+			if (!bcrypt.compareSync(password + pepper, user.password))
+				throw new Error(`wrong user (${id})`);
+
+			return user;
+		} catch (error) {
+			throw new Error(`unable delete user (${id}): ${error}`);
+		}
 	}
 }

@@ -1,12 +1,7 @@
 // @ts-ignore
 import Pool from '../database';
 
-export type Product = {
-	id?: Number;
-	name: String;
-	price: Number;
-	category: String;
-};
+import { Product } from '../types/product';
 
 export class ProductStore {
 	async index(): Promise<Product[]> {
@@ -17,11 +12,13 @@ export class ProductStore {
 
 			const result = await conn.query(sql);
 
+			const products: Product[] = result.rows;
+
 			conn.release();
 
-			return result.rows;
-		} catch (err) {
-			throw new Error(`Could not get products. Error: ${err}`);
+			return products;
+		} catch (error) {
+			throw new Error(`Could not get products. Error: ${error}`);
 		}
 	}
 
@@ -33,11 +30,13 @@ export class ProductStore {
 
 			const result = await conn.query(sql, [id]);
 
+			const product: Product = result.rows[0];
+
 			conn.release();
 
-			return result.rows[0];
-		} catch (err) {
-			throw new Error(`Could not find product ${id}. Error: ${err}`);
+			return product;
+		} catch (error) {
+			throw new Error(`Could not find product ${id}. Error: ${error}`);
 		}
 	}
 
@@ -50,14 +49,14 @@ export class ProductStore {
 
 			const result = await conn.query(sql, [p.name, p.price, p.category]);
 
-			const product = result.rows[0];
+			const product: Product = result.rows[0];
 
 			conn.release();
 
 			return product;
-		} catch (err) {
+		} catch (error) {
 			throw new Error(
-				`Could not add new product ${p.name}. Error: ${err}`
+				`Could not add new product ${p.name}. Error: ${error}`
 			);
 		}
 	}
@@ -70,13 +69,13 @@ export class ProductStore {
 
 			const result = await conn.query(sql, [id]);
 
-			const product = result.rows[0];
+			const product: Product = result.rows[0];
 
 			conn.release();
 
 			return product;
-		} catch (err) {
-			throw new Error(`Could not delete product ${id}. Error: ${err}`);
+		} catch (error) {
+			throw new Error(`Could not delete product ${id}. Error: ${error}`);
 		}
 	}
 }

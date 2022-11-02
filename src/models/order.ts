@@ -1,13 +1,7 @@
 // @ts-ignore
 import Pool from '../database';
 
-export type Order = {
-	id?: Number;
-	product_id: String;
-	quantity: Number;
-	user_id: String;
-	status: String;
-};
+import { Order } from '../types/order';
 
 export class OrderStore {
 	async index(): Promise<Order[]> {
@@ -17,10 +11,10 @@ export class OrderStore {
 			const sql = 'SELECT * FROM Orders';
 
 			const result = await conn.query(sql);
-
+			const orders: Order[] = result.rows;
 			conn.release();
 
-			return result.rows;
+			return orders;
 		} catch (err) {
 			throw new Error(`Could not get orders. Error: ${err}`);
 		}
@@ -34,9 +28,11 @@ export class OrderStore {
 
 			const result = await conn.query(sql, [id]);
 
+			const order: Order = result.rows[0];
+
 			conn.release();
 
-			return result.rows[0];
+			return order;
 		} catch (err) {
 			throw new Error(`Could not find order ${id}. Error: ${err}`);
 		}
@@ -56,7 +52,7 @@ export class OrderStore {
 				o.status,
 			]);
 
-			const order = result.rows[0];
+			const order: Order = result.rows[0];
 
 			conn.release();
 
@@ -76,7 +72,7 @@ export class OrderStore {
 
 			const result = await conn.query(sql, [id]);
 
-			const order = result.rows[0] as Order;
+			const order: Order = result.rows[0];
 
 			conn.release();
 
