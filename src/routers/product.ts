@@ -8,11 +8,7 @@ import { authorization } from '../middlewares/authorization.middleware';
 import { authentication } from '../middlewares/authentication.middleware';
 // route the handlers
 
-router
-	.route('/')
-	.get(index)
-	.post(authentication, authorization, create)
-	.delete(authentication, authorization, destroy);
-router.route('/:id').get(show);
+router.route('/').get(index).post(authentication, create);
+router.route('/:id').get(show).delete(authentication, authorization, destroy);
 
 export default router;
