@@ -1,0 +1,8 @@
+# ignore the env file
+.env
+# the downlouded modules
+node_modules
+# ignore the yarn lock file
+yarn.lock
+# ignore the output javascript from the typescript
+dist
