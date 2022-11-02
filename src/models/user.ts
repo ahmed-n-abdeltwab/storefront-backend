@@ -18,8 +18,8 @@ export class UserStore {
 			conn.release();
 
 			return users;
-		} catch (err) {
-			throw new Error(`unable get users: ${err}`);
+		} catch (error) {
+			throw new Error(`unable get users: ${error}`);
 		}
 	}
 
@@ -32,12 +32,14 @@ export class UserStore {
 			const result = await conn.query(sql, [id]);
 
 			const user: User = result.rows[0];
+
 			conn.release();
+
 			if (!user) throw new Error('User not found');
 
 			return user;
-		} catch (err) {
-			throw new Error(`unable show user ${id}: ${err}`);
+		} catch (error) {
+			throw new Error(`unable show user ${id}: ${error}`);
 		}
 	}
 
@@ -64,8 +66,8 @@ export class UserStore {
 			conn.release();
 
 			return user;
-		} catch (err) {
-			throw new Error(`unable create user (${u.username}): ${err}`);
+		} catch (error) {
+			throw new Error(`unable create user (${u.username}): ${error}`);
 		}
 	}
 	async update(u: User): Promise<User> {
@@ -92,8 +94,8 @@ export class UserStore {
 			conn.release();
 
 			return user;
-		} catch (err) {
-			throw new Error(`unable create user (${u.username}): ${err}`);
+		} catch (error) {
+			throw new Error(`unable create user (${u.username}): ${error}`);
 		}
 	}
 	async delete(id: string): Promise<User> {
@@ -108,8 +110,8 @@ export class UserStore {
 			conn.release();
 
 			return user;
-		} catch (err) {
-			throw new Error(`unable delete user (${id}): ${err}`);
+		} catch (error) {
+			throw new Error(`unable delete user (${id}): ${error}`);
 		}
 	}
 

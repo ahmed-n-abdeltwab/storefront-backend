@@ -15,8 +15,8 @@ export class OrderStore {
 			conn.release();
 
 			return orders;
-		} catch (err) {
-			throw new Error(`Could not get orders. Error: ${err}`);
+		} catch (error) {
+			throw new Error(`Could not get orders. Error: ${error}`);
 		}
 	}
 
@@ -33,8 +33,8 @@ export class OrderStore {
 			conn.release();
 
 			return order;
-		} catch (err) {
-			throw new Error(`Could not find order ${id}. Error: ${err}`);
+		} catch (error) {
+			throw new Error(`Could not find order ${id}. Error: ${error}`);
 		}
 	}
 
@@ -57,9 +57,9 @@ export class OrderStore {
 			conn.release();
 
 			return order;
-		} catch (err) {
+		} catch (error) {
 			throw new Error(
-				`Could not add new order with product ${o.product_id}. Error: ${err}`
+				`Could not add new order with product ${o.product_id}. Error: ${error}`
 			);
 		}
 	}
@@ -77,8 +77,8 @@ export class OrderStore {
 			conn.release();
 
 			return order;
-		} catch (err) {
-			throw new Error(`Could not delete order ${id}. Error: ${err}`);
+		} catch (error) {
+			throw new Error(`Could not delete order ${id}. Error: ${error}`);
 		}
 	}
 }
