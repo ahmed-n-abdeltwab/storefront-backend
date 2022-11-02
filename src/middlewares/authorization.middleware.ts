@@ -7,7 +7,7 @@ export const authorization = (
 	next: NextFunction
 ): void => {
 	try {
-		const id = req.params.id ?? req.body.id;
+		const id = req.body.user_id ?? req.params.id ?? req.body.id;
 		if (res.locals.decoded.user.id !== parseInt(id)) {
 			next(new HttpException(400, 'User not authorization'));
 			return;
