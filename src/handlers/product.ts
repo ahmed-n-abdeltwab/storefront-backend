@@ -12,7 +12,7 @@ export const index = async (
 	next: NextFunction
 ) => {
 	try {
-		const products = await store.index();
+		const products: Product[] = await store.index();
 		res.json(products);
 	} catch (error) {
 		next(new HttpException(400, (error as Error).message));
@@ -21,10 +21,10 @@ export const index = async (
 
 export const show = async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const product = await store.show(req.body.id);
-		res.json(product);
+		const product: Product = await store.show(req.params.id);
+		res.status(200).json(product);
 	} catch (error) {
-		next(new HttpException(400, (error as Error).message));
+		next(new HttpException(404, (error as Error).message));
 	}
 };
 
@@ -40,8 +40,8 @@ export const create = async (
 			category: req.body.category,
 		};
 
-		const newProduct = await store.create(product);
-		res.json(newProduct);
+		const newProduct: Product = await store.create(product);
+		res.status(201).json(newProduct);
 	} catch (error) {
 		next(new HttpException(400, (error as Error).message));
 	}
@@ -53,8 +53,8 @@ export const destroy = async (
 	next: NextFunction
 ) => {
 	try {
-		const deleted = await store.delete(req.body.id);
-		res.json(deleted);
+		const deleted: Product = await store.delete(req.params.id);
+		res.status(200).json(deleted);
 	} catch (error) {
 		next(new HttpException(400, (error as Error).message));
 	}
