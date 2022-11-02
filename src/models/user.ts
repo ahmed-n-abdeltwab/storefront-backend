@@ -9,17 +9,20 @@ import { User } from '../types/user';
 export class UserStore {
 	async index(): Promise<User[]> {
 		try {
-			//@ts-ignore
-			const conn = await Pool.connect();
 			const sql = 'SELECT * FROM Users';
 
+			//@ts-ignore
+			const conn = await Pool.connect();
+
 			const result = await conn.query(sql);
+
 			const users: User[] = result.rows;
+
 			conn.release();
 
 			return users;
 		} catch (error) {
-			throw new Error(`unable get users: ${error}`);
+			throw new Error(`Unable to get users: ${(error as Error).message}`);
 		}
 	}
 
@@ -39,16 +42,16 @@ export class UserStore {
 
 			return user;
 		} catch (error) {
-			throw new Error(`unable show user ${id}: ${error}`);
+			throw new Error((error as Error).message);
 		}
 	}
 
 	async create(u: User): Promise<User> {
 		try {
-			// @ts-ignore
-			const conn = await Pool.connect();
 			const sql =
 				'INSERT INTO Users (username, firstname, lastname, password) VALUES($1, $2, $3, $4) RETURNING *';
+			// @ts-ignore
+			const conn = await Pool.connect();
 
 			const hash = bcrypt.hashSync(
 				u.password + pepper,
@@ -67,15 +70,19 @@ export class UserStore {
 
 			return user;
 		} catch (error) {
-			throw new Error(`unable create user (${u.username}): ${error}`);
+			throw new Error(
+				`Unable to create user (${u.username}): ${
+					(error as Error).message
+				}`
+			);
 		}
 	}
 	async update(u: User): Promise<User> {
 		try {
-			// @ts-ignore
-			const conn = await Pool.connect();
 			const sql =
 				'UPDATE Users SET username=($1), firstname=($2), lastname=($3), password=($4) WHERE id=($5) RETURNING *';
+			// @ts-ignore
+			const conn = await Pool.connect();
 
 			const hash = bcrypt.hashSync(
 				u.password + pepper,
@@ -93,15 +100,18 @@ export class UserStore {
 
 			conn.release();
 
+			if (!user) throw new Error('User not found');
+
 			return user;
 		} catch (error) {
-			throw new Error(`unable create user (${u.username}): ${error}`);
+			throw new Error((error as Error).message);
 		}
 	}
 	async delete(id: string): Promise<User> {
 		try {
-			const conn = await Pool.connect();
 			const sql = 'DELETE FROM Users WHERE id=($1) RETURNING *';
+			// @ts-ignore
+			const conn = await Pool.connect();
 
 			const result = await conn.query(sql, [id]);
 
@@ -109,31 +119,34 @@ export class UserStore {
 
 			conn.release();
 
+			if (!user) throw new Error('User not found');
+
 			return user;
 		} catch (error) {
-			throw new Error(`unable delete user (${id}): ${error}`);
+			throw new Error((error as Error).message);
 		}
 	}
 
 	async authenticate(id: string, password: string): Promise<User> {
 		try {
-			const conn = await Pool.connect();
 			const sql = 'SELECT * FROM Users WHERE id=($1)';
+			// @ts-ignore
+			const conn = await Pool.connect();
 
 			const result = await conn.query(sql, [id]);
 
-			const user:User = result.rows[0];
+			const user: User = result.rows[0];
 
 			conn.release();
 
 			if (!user) throw new Error('User not found');
 
 			if (!bcrypt.compareSync(password + pepper, user.password))
-				throw new Error(`wrong user (${id})`);
+				throw new Error(`Wrong User`);
 
 			return user;
 		} catch (error) {
-			throw new Error(`unable delete user (${id}): ${error}`);
+			throw new Error((error as Error).message);
 		}
 	}
 }

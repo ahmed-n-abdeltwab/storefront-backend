@@ -6,17 +6,21 @@ import { Order } from '../types/order';
 export class OrderStore {
 	async index(): Promise<Order[]> {
 		try {
+			const sql = 'SELECT * FROM Orders';
 			// @ts-ignore
 			const conn = await Pool.connect();
-			const sql = 'SELECT * FROM Orders';
 
 			const result = await conn.query(sql);
+
 			const orders: Order[] = result.rows;
+
 			conn.release();
 
 			return orders;
 		} catch (error) {
-			throw new Error(`Could not get orders. Error: ${error}`);
+			throw new Error(
+				`Could not get orders. Error: ${(error as Error).message}`
+			);
 		}
 	}
 
@@ -32,9 +36,11 @@ export class OrderStore {
 
 			conn.release();
 
+			if (!order) throw new Error('Order not found');
+
 			return order;
 		} catch (error) {
-			throw new Error(`Could not find order ${id}. Error: ${error}`);
+			throw new Error((error as Error).message);
 		}
 	}
 
@@ -59,14 +65,40 @@ export class OrderStore {
 			return order;
 		} catch (error) {
 			throw new Error(
-				`Could not add new order with product ${o.product_id}. Error: ${error}`
+				`Could not add new order with product ${o.product_id}. Error: ${
+					(error as Error).message
+				}`
 			);
 		}
 	}
+	async update(o: Order): Promise<Order> {
+		try {
+			const sql =
+				'UPDATE Orders SET product_id=($1), quantity=($2), user_id=($3), status=($4) WHERE id=($5) RETURNING *';
+			// @ts-ignore
+			const conn = await Pool.connect();
 
+			const result = await conn.query(sql, [
+				o.product_id,
+				o.quantity,
+				o.user_id,
+				o.status,
+				o.id,
+			]);
+			const order: Order = result.rows[0];
+
+			conn.release();
+
+			if (!order) throw new Error('Order not found');
+
+			return order;
+		} catch (error) {
+			throw new Error((error as Error).message);
+		}
+	}
 	async delete(id: string): Promise<Order> {
 		try {
-			const sql = 'DELETE FROM Orders WHERE id=($1)';
+			const sql = 'DELETE FROM Orders WHERE id=($1) RETURNING *';
 			// @ts-ignore
 			const conn = await Pool.connect();
 
@@ -76,9 +108,11 @@ export class OrderStore {
 
 			conn.release();
 
+			if (!order) throw new Error('Order not found');
+
 			return order;
 		} catch (error) {
-			throw new Error(`Could not delete order ${id}. Error: ${error}`);
+			throw new Error((error as Error).message);
 		}
 	}
 }

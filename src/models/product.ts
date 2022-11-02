@@ -6,9 +6,9 @@ import { Product } from '../types/product';
 export class ProductStore {
 	async index(): Promise<Product[]> {
 		try {
+			const sql = 'SELECT * FROM Products';
 			// @ts-ignore
 			const conn = await Pool.connect();
-			const sql = 'SELECT * FROM Products';
 
 			const result = await conn.query(sql);
 
@@ -18,7 +18,9 @@ export class ProductStore {
 
 			return products;
 		} catch (error) {
-			throw new Error(`Could not get products. Error: ${error}`);
+			throw new Error(
+				`Could not get products. Error: ${(error as Error).message}`
+			);
 		}
 	}
 
@@ -34,9 +36,11 @@ export class ProductStore {
 
 			conn.release();
 
+			if (!product) throw new Error('Product not found');
+
 			return product;
 		} catch (error) {
-			throw new Error(`Could not find product ${id}. Error: ${error}`);
+			throw new Error((error as Error).message);
 		}
 	}
 
@@ -56,14 +60,16 @@ export class ProductStore {
 			return product;
 		} catch (error) {
 			throw new Error(
-				`Could not add new product ${p.name}. Error: ${error}`
+				`Could not add new product ${p.name}. Error: ${
+					(error as Error).message
+				}`
 			);
 		}
 	}
 
 	async delete(id: string): Promise<Product> {
 		try {
-			const sql = 'DELETE FROM Products WHERE id=($1)';
+			const sql = 'DELETE FROM Products WHERE id=($1) RETURNING *';
 			// @ts-ignore
 			const conn = await Pool.connect();
 
@@ -73,9 +79,11 @@ export class ProductStore {
 
 			conn.release();
 
+			if (!product) throw new Error('Product not found');
+
 			return product;
 		} catch (error) {
-			throw new Error(`Could not delete product ${id}. Error: ${error}`);
+			throw new Error((error as Error).message);
 		}
 	}
 }
