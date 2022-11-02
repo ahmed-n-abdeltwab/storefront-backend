@@ -1,7 +1,7 @@
 export type Order = {
-	id?: Number;
-	product_id: String;
-	quantity: Number;
-	user_id: String;
-	status: String;
+	id?: number;
+	product_id: number;
+	quantity: number;
+	user_id: number;
+	status: string;
 };
