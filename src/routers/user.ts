@@ -12,13 +12,15 @@ import {
 	authenticate,
 } from '../handlers/user';
 import { authorization } from '../middlewares/authorization.middleware';
+import { authentication } from '../middlewares/authentication.middleware';
 // route the handlers
-router.route('/').get(index).post(create);
+
+router.route('/').get(authentication, index).post(authentication, create);
 router
 	.route('/:id')
-	.get(authorization, show)
-	.put(authorization, update)
-	.delete(authorization, destroy);
+	.get(authentication, authorization, show)
+	.put(authentication, authorization, update)
+	.delete(authentication, authorization, destroy);
 router.route('/authenticate').post(authenticate);
 
 export default router;
