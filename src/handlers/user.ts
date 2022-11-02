@@ -25,7 +25,7 @@ export const index = async (
 export const show = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const user = await store.show(req.params.id);
-		
+
 		res.status(200).json(user);
 	} catch (error) {
 		next(new HttpException(404, (error as Error).message));
@@ -62,7 +62,7 @@ export const destroy = async (
 		const deleted = await store.delete(req.params.id);
 		res.json(deleted);
 	} catch (error) {
-		next(new HttpException(400, (error as Error).message));
+		next(new HttpException(404, (error as Error).message));
 	}
 };
 export const update = async (
@@ -81,7 +81,7 @@ export const update = async (
 		const updated = await store.update(user);
 		res.status(201).json(updated);
 	} catch (error) {
-		next(new HttpException(400, (error as Error).message));
+		next(new HttpException(404, (error as Error).message));
 	}
 };
 
