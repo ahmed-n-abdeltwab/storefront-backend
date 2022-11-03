@@ -16,7 +16,7 @@ export const index = async (
 ) => {
 	try {
 		const users = await store.index();
-		res.status(200).json(users);
+		res.status(200).json({ users, nbHits: users.length });
 	} catch (error) {
 		next(new HttpException(400, (error as Error).message));
 	}

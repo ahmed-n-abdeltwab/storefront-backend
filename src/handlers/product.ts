@@ -13,7 +13,7 @@ export const index = async (
 ) => {
 	try {
 		const products: Product[] = await store.index();
-		res.json(products);
+		res.json({ products, nbHits: products.length });
 	} catch (error) {
 		next(new HttpException(400, (error as Error).message));
 	}
