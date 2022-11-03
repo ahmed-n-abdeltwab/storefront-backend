@@ -1,5 +1,0 @@
-CREATE USER shopping_user WITH PASSWORD 'password123';
-CREATE DATABASE shopping;
-CREATE DATABASE shopping_test;
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO shopping_user;
-GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO shopping_user;
