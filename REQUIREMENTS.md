@@ -1,42 +1,105 @@
-# API Requirements
-The company stakeholders want to create an online storefront to showcase their great product ideas. Users need to be able to browse an index of all products, see the specifics of a single product, and add products to an order that they can view in a cart page. You have been tasked with building the API that will support this application, and your coworker is building the frontend.
+# API Endpoints
+### Products
+- Index `/products` [GET]
+- Show `/products/:product_id` [GET]
+- Create `/products` [POST] [token required] [body]
+```json
+{
+    "user_id":<number>,
+    "name": <string>,
+	"price": <number>,
+	"category": <string>
+}
+```
+- Delete `/products/:product_id` [DELETE] [token required] [body]
+```json
+{
+    "user_id":<number>
+}
+```
+### Users
+- Index `/users` [GET] [token required] [body]
+```json
+{
+    "user_id":<number>
+}
+```
+- Create `/users` [POST] [body]
+```json
+{
+    "username":<string>,
+    "firstname":<string>,
+    "lastname":<string>,
+    "password":<string>
+}
+```
+- Show `/users/:user_id` [GET] [token required]
+- Update `/users/:user_id` [PUT] [token required] [body]
+```json
+{
+    "username":<string>,
+    "firstname":<string>,
+    "lastname":<string>,
+    "password":<string>
+}
+```
+- Delete `/users/:user_id` [DELETE] [token required]
+- Refresh the Token `/users/authenticate` [POST] [body]
+```json
+{
+    "username": <string>,
+    "password": <string>
+}
+```
 
-These are the notes from a meeting with the frontend developer that describe what endpoints the API needs to supply, as well as data shapes the frontend and backend have agreed meet the requirements of the application. 
+### Orders
+- Index `/orders` [GET]
+- Create `/orders` [POST] [token required] [body]
+```json
+{
+    "product_id": <number>,
+	"quantity": <number>,
+	"user_id": <number>
+}
+```
+- Show `/orders/:order_id` [GET] 
+- Update `/orders/:order_id` [PUT] [token required] [body]
+```json
+{
+    "user_id": <number>,
+    "product_id": <number>,
+    "quantity": <number>,
+    "status": <"active" or "complete">
+}
+```
+- Delete `/orders/:order_id` [DELETE] [token required] [body]
+```json
+{
+    "user_id":<number>
+}
+```
+### Dashboard
+- Current Order by user `/user_with_orders/:user_id` [GET] [token required]
 
-## API Endpoints
-#### Products
-- Index 
-- Show
-- Create [token required]
-- [OPTIONAL] Top 5 most popular products 
-- [OPTIONAL] Products by category (args: product category)
-
-#### Users
-- Index [token required]
-- Show [token required]
-- Create N[token required]
-
-#### Orders
-- Current Order by user (args: user id)[token required]
-- [OPTIONAL] Completed Orders by user (args: user id)[token required]
 
 ## Data Shapes
 #### Product
--  id
-- name
-- price
-- [OPTIONAL] category
+- id [PK] [SERIAL]
+- name [VARCHAR 200] [NOT NULL]
+- price [INTEGER] [NOT NULL]
+- category [VARCHAR 100]
 
 #### User
-- id
-- firstName
-- lastName
-- password
+- id [PK] [SERIAL]
+- username [VARCHAR 100] [NOT NULL]
+- firstName [VARCHAR 50] [NOT NULL]
+- lastName [VARCHAR 50] [NOT NULL]
+- password [VARCHAR] 
 
 #### Orders
-- id
-- id of each product in the order
-- quantity of each product in the order
-- user_id
-- status of order (active or complete)
+- id [PK] [SERIAL]
+- product_id [bigint] [NOT NULL] [REFERENCES Products.id]
+- quantity [INTEGER] [NOT NULL]
+- user_id [bigint] [NOT NULL] [REFERENCES Users.id]
+- status [VARCHAR 20] [NOT NULL]
 

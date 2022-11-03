@@ -26,6 +26,11 @@ SALT_ROUNDS=10
 ```sh
 docker-compose up -d
 ```
+### you can connect to the database using this command.
+
+```sh
+docker-compose exec db psql -U postgres 
+```
 ### To migrate the database tables. Follow the steps below to run them.
 
 * install yarn `npm install yarn -g`
