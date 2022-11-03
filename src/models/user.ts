@@ -70,11 +70,7 @@ export class UserStore {
 
 			return user;
 		} catch (error) {
-			throw new Error(
-				`Unable to create user (${u.username}): ${
-					(error as Error).message
-				}`
-			);
+			throw new Error(`The username is in used`);
 		}
 	}
 	async update(u: User): Promise<User> {
@@ -127,13 +123,13 @@ export class UserStore {
 		}
 	}
 
-	async authenticate(id: string, password: string): Promise<User> {
+	async authenticate(username: string, password: string): Promise<User> {
 		try {
-			const sql = 'SELECT * FROM Users WHERE id=($1)';
+			const sql = 'SELECT * FROM Users WHERE username=($1)';
 			// @ts-ignore
 			const conn = await Pool.connect();
 
-			const result = await conn.query(sql, [id]);
+			const result = await conn.query(sql, [username]);
 
 			const user: User = result.rows[0];
 

@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { DashboardQueries } from '../models/dashboard';
+import { OrderStore } from '../models/order';
 
 import { UserWithOrders } from '../types/dashboard';
 
 import HttpException from '../errors/HttpException';
 
-const dashboard = new DashboardQueries();
+const store = new OrderStore();
 
 export const userWithOrders = async (
 	req: Request,
@@ -14,7 +14,7 @@ export const userWithOrders = async (
 	next: NextFunction
 ) => {
 	try {
-		const orders: UserWithOrders[] = await dashboard.userWithOrders(
+		const orders: UserWithOrders[] = await store.userWithOrders(
 			req.params.id
 		);
 		res.status(200).json({ orders, nbHits: orders.length });

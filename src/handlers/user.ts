@@ -91,7 +91,10 @@ export const authenticate = async (
 	next: NextFunction
 ) => {
 	try {
-		const user = await store.authenticate(req.body.id, req.body.password);
+		const user = await store.authenticate(
+			req.body.username,
+			req.body.password
+		);
 		const { password, ...rest }: User = user;
 		const token = jwt.sign({ user: rest }, TOKEN_SECRET);
 		res.json(token);

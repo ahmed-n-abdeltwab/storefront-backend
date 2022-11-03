@@ -15,7 +15,7 @@ import { authorization } from '../middlewares/authorization.middleware';
 import { authentication } from '../middlewares/authentication.middleware';
 // route the handlers
 
-router.route('/').get(authentication, index).post(authentication, create);
+router.route('/').get(authentication, authorization, index).post(create);
 router
 	.route('/:id')
 	.get(authentication, authorization, show)
