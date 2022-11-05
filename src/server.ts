@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import cors from 'cors'; 
+import cors from 'cors';
 
 // import the routes
 import routes from './routers/index';
@@ -13,16 +13,16 @@ const app: express.Application = express();
 const address: string = '0.0.0.0:3000';
 
 app.use(express.json());
-app.use(cors()); 
+app.use(cors());
 
 // logger
-app.use(loggerMiddleware)
+app.use(loggerMiddleware);
 
 app.get('/', function (_req: Request, res: Response) {
 	res.send('Hello World!');
 });
 
-app.use(routes)
+app.use('api/', routes);
 app.use(errorMiddleware);
 app.use(invalidPathHandler);
 

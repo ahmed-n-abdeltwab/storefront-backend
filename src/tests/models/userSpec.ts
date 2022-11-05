@@ -1,5 +1,5 @@
 import { UserStore } from '../../models/user';
-import { User } from '../../types/user'
+import { User } from '../../types/user';
 import bcrypt from 'bcrypt';
 
 const saltRounds = process.env.SALT_ROUNDS ?? '10';
@@ -26,15 +26,18 @@ describe('User Model', () => {
 	it('should have a delete method', () => {
 		expect(store.delete).toBeDefined();
 	});
-	
+
 	it('create method should add a user', async () => {
-        const user:User = {
-            username: 'userTest',
-            firstname: 'test',
-            lastname: 'test',
-            password: 'test',
-        };
-        const hash = bcrypt.hashSync(user.password + pepper, parseInt(saltRounds));
+		const user: User = {
+			username: 'userTest',
+			firstname: 'test',
+			lastname: 'test',
+			password: 'test',
+		};
+		const hash = bcrypt.hashSync(
+			user.password + pepper,
+			parseInt(saltRounds)
+		);
 		const result = await store.create(user);
 		expect(result).toEqual({
 			id: 1,
@@ -46,13 +49,16 @@ describe('User Model', () => {
 	});
 
 	it('index method should return a list of users', async () => {
-        const user:User = {
-            username: 'userTest',
-            firstname: 'test',
-            lastname: 'test',
-            password: 'test',
-        };
-        const hash = bcrypt.hashSync(user.password + pepper, parseInt(saltRounds));
+		const user: User = {
+			username: 'userTest',
+			firstname: 'test',
+			lastname: 'test',
+			password: 'test',
+		};
+		const hash = bcrypt.hashSync(
+			user.password + pepper,
+			parseInt(saltRounds)
+		);
 		const result = await store.index();
 		expect(result).toEqual([
 			{
@@ -66,13 +72,16 @@ describe('User Model', () => {
 	});
 
 	it('show method should return the correct user', async () => {
-        const user:User = {
-            username: 'userTest',
-            firstname: 'test',
-            lastname: 'test',
-            password: 'test',
-        };
-        const hash = bcrypt.hashSync(user.password + pepper, parseInt(saltRounds));
+		const user: User = {
+			username: 'userTest',
+			firstname: 'test',
+			lastname: 'test',
+			password: 'test',
+		};
+		const hash = bcrypt.hashSync(
+			user.password + pepper,
+			parseInt(saltRounds)
+		);
 		const result = await store.show('1');
 		expect(result).toEqual({
 			id: 1,

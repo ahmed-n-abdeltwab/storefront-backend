@@ -115,7 +115,10 @@ export class OrderStore {
 			throw new Error((error as Error).message);
 		}
 	}
-	async userWithOrders(id: string, limits:number = 1): Promise<UserWithOrders[]> {
+	async userWithOrders(
+		id: string,
+		limits: number = 1
+	): Promise<UserWithOrders[]> {
 		try {
 			//@ts-ignore
 			const conn = await Pool.connect();
