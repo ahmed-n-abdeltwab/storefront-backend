@@ -8,7 +8,7 @@
     "build": "npx tsc",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
     "migrate": "db-migrate --env test up && db-migrate up",
-    "test": "set ENV=test db-migrate --env test up:all -c 3 && jasmine-ts && db-migrate --env test down:all -c 3",
+    "test": "db-migrate --env test reset -c 3 && db-migrate --env test up:all -c 3 && cross-env ENV=test jasmine-ts && db-migrate --env test down:all -c 3",
     "tsc": "tsc",
     "prettier": "prettier --config .prettierrc src/**/* --write"
   },
@@ -33,6 +33,7 @@
     "@types/supertest": "^2.0.12",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "db-migrate-pg": "^1.2.2",
     "dotenv": "^16.0.3",
     "jasmine": "^3.6.4",
