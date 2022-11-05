@@ -2,10 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors'; 
 
 // import the routes
-import userRouter from './routers/user';
-import productRouter from './routers/product';
-import orderRouter from './routers/order';
-import dashboardRouter from './routers/dashboard';
+import routes from './routers/index';
 
 // import the middlewares
 import invalidPathHandler from './middlewares/not-found.middleware';
@@ -21,15 +18,11 @@ app.use(cors());
 // logger
 app.use(loggerMiddleware)
 
-app.use('/users', userRouter);
-app.use('/products', productRouter);
-app.use('/orders', orderRouter);
-app.use(dashboardRouter);
-
 app.get('/', function (_req: Request, res: Response) {
 	res.send('Hello World!');
 });
 
+app.use(routes)
 app.use(errorMiddleware);
 app.use(invalidPathHandler);
 
