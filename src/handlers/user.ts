@@ -46,7 +46,7 @@ export const create = async (
 	try {
 		const newUser = await store.create(user);
 		const { password, ...rest }: User = newUser;
-		const token = jwt.sign({ user: rest }, TOKEN_SECRET);
+		const token = jwt.sign({ user: rest }, TOKEN_SECRET, { expiresIn: '1h' });
 		res.status(201).json(token);
 	} catch (error) {
 		next(new HttpException(400, (error as Error).message));
@@ -96,7 +96,7 @@ export const authenticate = async (
 			req.body.password
 		);
 		const { password, ...rest }: User = user;
-		const token = jwt.sign({ user: rest }, TOKEN_SECRET);
+		const token = jwt.sign({ user: rest }, TOKEN_SECRET, { expiresIn: '1h' });
 		res.json(token);
 	} catch (error) {
 		next(new HttpException(401, (error as Error).message));
