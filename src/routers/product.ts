@@ -3,7 +3,7 @@ import express from 'express';
 const router = express.Router();
 
 // import the handlers
-import { index, show, create, destroy, update } from '../handlers/product';
+import { index, show, create, destroy, update } from '../controllers/product';
 
 import { authentication } from '../middlewares/authentication.middleware';
 // route the handlers

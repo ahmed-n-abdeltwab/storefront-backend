@@ -1,16 +1,16 @@
-import { create, destroy, index, show, update } from '../../handlers/order';
+import { create, destroy, index, show, update } from '../../controllers/order';
 
 describe('Order Handler', () => {
-	it('should have an create method', () => {
+	it('should have a create method', () => {
 		expect(create).toBeDefined();
 	});
-	it('should have an destroy method', () => {
+	it('should have a destroy method', () => {
 		expect(destroy).toBeDefined();
 	});
 	it('should have an index method', () => {
 		expect(index).toBeDefined();
 	});
-	it('should have an show method', () => {
+	it('should have a show method', () => {
 		expect(show).toBeDefined();
 	});
 	it('should have an update method', () => {

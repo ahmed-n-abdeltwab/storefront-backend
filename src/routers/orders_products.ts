@@ -10,7 +10,7 @@ import {
 	indexProduct,
 	showProduct,
 	updateProduct,
-} from '../handlers/orders_products';
+} from '../controllers/orders_products';
 
 import { authentication } from '../middlewares/authentication.middleware';
 

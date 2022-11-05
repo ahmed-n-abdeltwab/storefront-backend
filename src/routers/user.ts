@@ -10,7 +10,7 @@ import {
 	update,
 	destroy,
 	authenticate,
-} from '../handlers/user';
+} from '../controllers/user';
 
 // middlewares
 import { authorization } from '../middlewares/authorization.middleware';

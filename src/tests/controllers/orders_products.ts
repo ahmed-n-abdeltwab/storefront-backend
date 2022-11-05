@@ -5,7 +5,7 @@ import {
 	showProduct,
 	updateProduct,
 	currentOrders,
-} from '../../handlers/orders_products';
+} from '../../controllers/orders_products';
 
 describe('Order Handler', () => {
 	it('should have an indexProduct method', () => {
@@ -26,7 +26,7 @@ describe('Order Handler', () => {
 	it('should have a showProduct method', () => {
 		expect(showProduct).toBeDefined();
 	});
-	it('should have a updateProduct method', () => {
+	it('should have an updateProduct method', () => {
 		expect(updateProduct).toBeDefined();
 	});
 });
