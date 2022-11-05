@@ -115,13 +115,32 @@ export class OrderStore {
 			throw new Error((error as Error).message);
 		}
 	}
-	async userWithOrders(id: string): Promise<UserWithOrders[]> {
+	async userWithOrders(id: string, limits:number = 1): Promise<UserWithOrders[]> {
 		try {
 			//@ts-ignore
 			const conn = await Pool.connect();
 			const sql = `SELECT p.name, o.id, o.quantity, o.status
             FROM Orders o INNER JOIN Products p
-            ON o.product_id = p.id WHERE o.user_id = ($1)`;
+            ON o.product_id = p.id WHERE o.user_id = ($1) ORDER BY o.user_id DESC LIMIT ($2)`;
+
+			const result = await conn.query(sql, [id, limits]);
+
+			conn.release();
+
+			const orders: UserWithOrders[] = result.rows;
+
+			return orders;
+		} catch (error) {
+			throw new Error(`unable get Orders with user: ${error}`);
+		}
+	}
+	async userWithActiveOrders(id: string): Promise<UserWithOrders[]> {
+		try {
+			//@ts-ignore
+			const conn = await Pool.connect();
+			const sql = `SELECT p.name, o.id, o.quantity, o.status
+            FROM Orders o INNER JOIN Products p
+            ON o.product_id = p.id WHERE o.user_id = ($1) AND o.status like "active" ORDER BY o.user_id DESC LIMIT 1`;
 
 			const result = await conn.query(sql, [id]);
 
@@ -131,7 +150,7 @@ export class OrderStore {
 
 			return orders;
 		} catch (error) {
-			throw new Error(`unable get Orders with user: ${error}`);
+			throw new Error(`unable get The active Orders with user: ${error}`);
 		}
 	}
 }

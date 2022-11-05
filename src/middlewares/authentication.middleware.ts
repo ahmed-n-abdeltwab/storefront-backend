@@ -16,8 +16,8 @@ export const authentication = (
 			next(new HttpException(400, 'the authorization Header is empty'));
 			return;
 		}
-		const token = authorizationHeader.split(' ')[1];
-		const decoded = jwt.verify(token, TOKEN_SECRET) as jwt.JwtPayload;
+		const token:string = authorizationHeader.split(' ')[1] ?? '';
+		const decoded:string | jwt.JwtPayload = jwt.verify(token, TOKEN_SECRET);
 		res.locals.decoded = decoded;
 		next();
 	} catch (err) {
