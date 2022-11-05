@@ -2,8 +2,9 @@ import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
 import HttpException from '../errors/HttpException';
+import { TOKEN_SECRET } from '../utils/environment';
 
-const TOKEN_SECRET = process.env.TOKEN_SECRET ?? 'top secret';
+const token_secret = TOKEN_SECRET ?? 'top secret';
 
 export const authentication = (
 	req: Request,
@@ -19,7 +20,7 @@ export const authentication = (
 		const token: string = authorizationHeader.split(' ')[1] ?? '';
 		const decoded: string | jwt.JwtPayload = jwt.verify(
 			token,
-			TOKEN_SECRET
+			token_secret
 		);
 		res.locals.decoded = decoded;
 		next();

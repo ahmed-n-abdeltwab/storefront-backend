@@ -115,7 +115,7 @@ export class OrderStore {
 			throw new Error((error as Error).message);
 		}
 	}
-	async userWithOrders(
+	async userWithOrder(
 		id: string,
 		limits: number = 1
 	): Promise<UserWithOrders[]> {

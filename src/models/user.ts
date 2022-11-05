@@ -1,8 +1,9 @@
 import Pool from '../database';
+import { SALT_ROUNDS, BCRYPT_PASSWORD } from '../utils/environment';
 import bcrypt from 'bcrypt';
 
-const saltRounds = process.env.SALT_ROUNDS ?? '10';
-const pepper = process.env.BCRYPT_PASSWORD;
+const saltRounds = SALT_ROUNDS ?? '10';
+const pepper = BCRYPT_PASSWORD ?? 'secret password';
 
 import { User } from '../types/user';
 
