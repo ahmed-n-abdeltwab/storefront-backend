@@ -1,4 +1,10 @@
-import { create, destroy, index, show, update } from '../../controllers/product';
+import {
+	create,
+	destroy,
+	index,
+	show,
+	update,
+} from '../../controllers/product';
 
 describe('Product Handler', () => {
 	it('should have a create method', () => {
