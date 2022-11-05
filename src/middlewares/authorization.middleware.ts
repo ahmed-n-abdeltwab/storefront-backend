@@ -2,13 +2,12 @@ import { NextFunction, Request, Response } from 'express';
 import HttpException from '../errors/HttpException';
 
 export const authorization = (
-	req: Request,
+	_req: Request,
 	res: Response,
 	next: NextFunction
 ): void => {
 	try {
-		const id = req.body.user_id ?? req.params.id ?? req.body.id;
-		if (res.locals.decoded.user.id !== parseInt(id)) {
+		if (res.locals.decoded.user.role !== 'admin') {
 			next(new HttpException(400, 'User not authorization'));
 			return;
 		}

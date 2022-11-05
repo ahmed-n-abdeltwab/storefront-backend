@@ -2,10 +2,12 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
 import { UserStore } from '../models/user';
-import { User } from '../types/user';
-import HttpException from '../errors/HttpException';
-import { TOKEN_SECRET } from '../utils/environment';
 
+import { User } from '../types/user';
+
+import HttpException from '../errors/HttpException';
+
+import { TOKEN_SECRET } from '../utils/environment';
 const token_secret = TOKEN_SECRET ?? 'top secret';
 
 const store = new UserStore();
@@ -43,6 +45,7 @@ export const create = async (
 		firstname: req.body.firstname,
 		lastname: req.body.lastname,
 		password: req.body.password,
+		role: req.body.role,
 	};
 	try {
 		const newUser = await store.create(user);
@@ -79,6 +82,7 @@ export const update = async (
 		firstname: req.body.firstname,
 		lastname: req.body.lastname,
 		password: req.body.password,
+		role: req.body.role,
 	};
 	try {
 		const updated = await store.update(user);

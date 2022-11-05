@@ -50,7 +50,7 @@ export class UserStore {
 	async create(u: User): Promise<User> {
 		try {
 			const sql =
-				'INSERT INTO Users (username, firstname, lastname, password) VALUES($1, $2, $3, $4) RETURNING *';
+				'INSERT INTO Users (username, firstname, lastname, password, role) VALUES($1, $2, $3, $4, $5) RETURNING *';
 			// @ts-ignore
 			const conn = await Pool.connect();
 
@@ -64,6 +64,7 @@ export class UserStore {
 				u.firstname,
 				u.lastname,
 				hash,
+				u.role,
 			]);
 			const user: User = result.rows[0];
 
@@ -77,7 +78,7 @@ export class UserStore {
 	async update(u: User): Promise<User> {
 		try {
 			const sql =
-				'UPDATE Users SET username=($1), firstname=($2), lastname=($3), password=($4) WHERE id=($5) RETURNING *';
+				'UPDATE Users SET username=($1), firstname=($2), lastname=($3), password=($4), role=($5) WHERE id=($6) RETURNING *';
 			// @ts-ignore
 			const conn = await Pool.connect();
 
@@ -91,6 +92,7 @@ export class UserStore {
 				u.firstname,
 				u.lastname,
 				hash,
+				u.role,
 				u.id,
 			]);
 			const user: User = result.rows[0];

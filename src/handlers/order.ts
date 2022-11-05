@@ -37,10 +37,7 @@ export const create = async (
 ) => {
 	try {
 		const order: Order = {
-			product_id: req.body.product_id,
-			quantity: req.body.quantity,
 			user_id: req.body.user_id,
-			status: 'active',
 		};
 		const newOrder: Order = await store.create(order);
 		res.json(newOrder);
@@ -56,10 +53,8 @@ export const update = async (
 ) => {
 	const order: Order = {
 		id: parseInt(req.params.id),
-		product_id: req.body.product_id,
-		quantity: req.body.quantity,
 		user_id: req.body.user_id,
-		status: req.body.status,
+		isCompleted: req.body.isCompleted,
 	};
 	try {
 		const updated: Order = await store.update(order);

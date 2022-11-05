@@ -11,10 +11,12 @@ import {
 	destroy,
 	authenticate,
 } from '../handlers/user';
+
+// middlewares
 import { authorization } from '../middlewares/authorization.middleware';
 import { authentication } from '../middlewares/authentication.middleware';
-// route the handlers
 
+// routers
 router.route('/').get(authentication, authorization, index).post(create);
 router
 	.route('/:id')

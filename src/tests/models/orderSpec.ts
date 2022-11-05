@@ -30,14 +30,16 @@ const product: Product = {
 	category: 'category',
 };
 
+let user_id: number, product_id: number, order_id: number;
+
 describe('Order Model', () => {
 	beforeAll(async () => {
-		user_store.create(user);
-		product_store.create(product);
+		user_id = (await user_store.create(user))?.id ?? 1;
+		product_id = (await product_store.create(product))?.id ?? 1;
 	});
 	afterAll(async () => {
-		user_store.delete('1');
-		product_store.delete('1');
+		await user_store.delete(user_id?.toString());
+		await product_store.delete(product_id?.toString());
 	});
 	it('should have an index method', () => {
 		expect(order_store.index).toBeDefined();
@@ -60,26 +62,27 @@ describe('Order Model', () => {
 	});
 
 	it('should have a userWithOrders method', () => {
-		expect(order_store.userWithOrders).toBeDefined();
+		expect(order_store.userWithOrder).toBeDefined();
 	});
 
 	it('create method should add a order', async () => {
 		const result: Order = await order_store.create(order);
-		expect(result).toEqual({ ...order, id: 1 });
+		order_id = result?.id ?? 1;
+		expect(result).toEqual({ ...order, id: order_id });
 	});
 
 	it('index method should return a list of orders', async () => {
 		const result = await order_store.index();
-		expect(result).toEqual([{ ...order, id: 1 }]);
+		expect(result).toEqual([{ ...order, id: order_id }]);
 	});
 
 	it('show method should return the correct order', async () => {
-		const result = await order_store.show('1');
-		expect(result).toEqual({ ...order, id: 1 });
+		const result = await order_store.show(order_id.toString());
+		expect(result).toEqual({ ...order, id: order_id });
 	});
 
 	it('delete method should remove the order', async () => {
-		await order_store.delete('1');
+		await order_store.delete(order_id.toString());
 		const result = await order_store.index();
 
 		expect(result).toEqual([]);

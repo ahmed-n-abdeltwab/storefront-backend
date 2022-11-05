@@ -47,6 +47,24 @@ export const create = async (
 	}
 };
 
+export const update = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	const product: Product = {
+		name: req.body.name,
+		price: req.body.price,
+		category: req.body.category,
+	};
+	try {
+		const updated: Product = await store.update(product);
+		res.status(201).json(updated);
+	} catch (error) {
+		next(new HttpException(404, (error as Error).message));
+	}
+};
+
 export const destroy = async (
 	req: Request,
 	res: Response,

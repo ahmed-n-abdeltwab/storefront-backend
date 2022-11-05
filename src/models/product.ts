@@ -47,11 +47,16 @@ export class ProductStore {
 	async create(p: Product): Promise<Product> {
 		try {
 			const sql =
-				'INSERT INTO Products (name, price, category) VALUES($1, $2, $3) RETURNING *';
+				'INSERT INTO Products (name, price, category, description) VALUES($1, $2, $3, $4) RETURNING *';
 			// @ts-ignore
 			const conn = await Pool.connect();
 
-			const result = await conn.query(sql, [p.name, p.price, p.category]);
+			const result = await conn.query(sql, [
+				p.name,
+				p.price,
+				p.category,
+				p.description,
+			]);
 
 			const product: Product = result.rows[0];
 
@@ -66,7 +71,31 @@ export class ProductStore {
 			);
 		}
 	}
+	async update(product: Product): Promise<Product> {
+		try {
+			const sql =
+				'UPDATE Products SET name=($1), price=($2), category=($3), description=($4) WHERE id=($5) RETURNING *';
+			// @ts-ignore
+			const conn = await Pool.connect();
 
+			const result = await conn.query(sql, [
+				product.name,
+				product.price,
+				product.category,
+				product.description,
+				product.id,
+			]);
+			const newProduct: Product = result.rows[0];
+
+			conn.release();
+
+			if (!newProduct) throw new Error('Product not found');
+
+			return newProduct;
+		} catch (error) {
+			throw new Error((error as Error).message);
+		}
+	}
 	async delete(id: string): Promise<Product> {
 		try {
 			const sql = 'DELETE FROM Products WHERE id=($1) RETURNING *';

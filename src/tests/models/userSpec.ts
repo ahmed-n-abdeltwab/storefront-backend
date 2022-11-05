@@ -10,6 +10,8 @@ const user: User = {
 	password: 'test',
 };
 
+let user_id: number;
+
 describe('User Model', () => {
 	it('should have an index method', () => {
 		expect(store.index).toBeDefined();
@@ -33,7 +35,8 @@ describe('User Model', () => {
 
 	it('create method should add a user', async () => {
 		const result = await store.create(user);
-		expect(result?.id).toEqual(2);
+		user_id = result?.id ?? 2;
+		expect(result?.id).toEqual(user_id);
 		expect(result?.username).toEqual(user.username);
 		expect(result?.firstname).toEqual(user.firstname);
 		expect(result?.lastname).toEqual(user.lastname);
@@ -41,22 +44,22 @@ describe('User Model', () => {
 
 	it('index method should return a list of users', async () => {
 		const result = await store.index();
-		expect(result[0]?.id).toEqual(2);
+		expect(result[0]?.id).toEqual(user_id);
 		expect(result[0]?.username).toEqual(user.username);
 		expect(result[0]?.firstname).toEqual(user.firstname);
 		expect(result[0]?.lastname).toEqual(user.lastname);
 	});
 
 	it('show method should return the correct user', async () => {
-		const result = await store.show('2');
-		expect(result?.id).toEqual(2);
+		const result = await store.show(user_id.toString());
+		expect(result?.id).toEqual(user_id);
 		expect(result?.username).toEqual(user.username);
 		expect(result?.firstname).toEqual(user.firstname);
 		expect(result?.lastname).toEqual(user.lastname);
 	});
 
 	it('delete method should remove the user', async () => {
-		await store.delete('2');
+		await store.delete(user_id.toString());
 		const result = await store.index();
 
 		expect(result).toEqual([]);

@@ -1,4 +1,4 @@
-import router from '../../routers/dashboard';
+import router from '../../routers/orders_products';
 
 describe('Dashboard Router', () => {
 	it('should have a route method', () => {
