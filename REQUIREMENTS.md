@@ -100,7 +100,7 @@
 }
 ```
 
-## Data Shapes
+## Database Schema
 #### Product
 - id **[PK] [SERIAL]**
 - name **[VARCHAR 200] [NOT NULL]**
