@@ -59,7 +59,7 @@
 - Create `/api/orders` **[POST] [token required] [body]**
 ```json
 {
-	"user_id": "<number>",
+    "user_id": "<number>",
     "completed": "<boolean>"
 }
 ```
@@ -78,17 +78,17 @@
 - Create `/api/ordersProducts` **[POST] [token required] [body]**
 ```json
 {
-	"order_id": "<number>",
-	"product_id": "<number>",
-	"quantity": "<number>"
+    "order_id": "<number>",
+    "product_id": "<number>",
+    "quantity": "<number>"
 }
 ```
 - Update `/api/ordersProducts/:orderProduct_id` **[PUT] [token required] [body]**
 ```json
 {
-	"order_id": "<number>",
-	"product_id": "<number>",
-	"quantity": "<number>"
+    "order_id": "<number>",
+    "product_id": "<number>",
+    "quantity": "<number>"
 }
 ```
 - Delete `/api/ordersProducts/:orderProduct_id` **[DELETE] [token required]**
@@ -96,7 +96,7 @@
 - Get a list of the Current Orders completed or not `/api/ordersProducts/currentOrders/:orderProduct_id` **[GET] [token required] [body]**
 ```json
 {
-	"completed": "<boolean>",
+    "completed": "<boolean>",
 }
 ```
 
