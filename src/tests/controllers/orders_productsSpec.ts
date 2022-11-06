@@ -12,14 +12,7 @@ import {
 
 import { ProductStore, UserStore, OrderStore } from '../../models/index';
 
-import {
-	Product,
-	User,
-	Order,
-	CurrentOrders,
-	OrderProduct,
-	Headers,
-} from '../../types/index';
+import { Product, User, Order, OrderProduct, Headers } from '../../types/index';
 
 let commonHeaders: Headers = {
 	'Content-Type': 'application/json',
@@ -56,10 +49,7 @@ const product_store = new ProductStore();
 
 const request = supertest(app);
 
-let user_id: number,
-	product_id: number,
-	order_id: number,
-	orderProduct_id: number;
+let orderProduct_id: number;
 
 describe('Orders Products Controller', () => {
 	beforeAll(async () => {
