@@ -1,50 +1,51 @@
 # API Endpoints
 ### Products
-- Index `/products` [GET]
-- Show `/products/:product_id` [GET]
-- Create `/products` [POST] [token required] [body]
+- Index `/api/products` **[GET]**
+- Show `/api/products/:product_id` **[GET]**
+- Create `/api/products` **[POST] [token required] [body]**
 ```json
 {
-    "user_id":<number>,
     "name": <string>,
 	"price": <number>,
-	"category": <string>
+	"category": <string>,
+    "description": <string>
 }
 ```
-- Delete `/products/:product_id` [DELETE] [token required] [body]
+- Update `/api/products/:product_id` **[PUT] [token required] [body]**
 ```json
 {
-    "user_id":<number>
+    "name": <string>,
+	"price": <number>,
+	"category": <string>,
+    "description": <string>
 }
 ```
+- Delete `/api/products/:product_id` **[DELETE] [token required]**
 ### Users
-- Index `/users` [GET] [token required] [body]
-```json
-{
-    "user_id":<number>
-}
-```
-- Create `/users` [POST] [body]
+- Index `/api/users` **[GET] [token required] [ADMIN]**
+- Show `/api/users/:user_id` **[GET] [token required] [ADMIN]**
+- Create `/api/users` **[POST] [body]**
 ```json
 {
     "username":<string>,
     "firstname":<string>,
     "lastname":<string>,
-    "password":<string>
+    "password":<string>,
+    "role": 'admin' | 'user'
 }
 ```
-- Show `/users/:user_id` [GET] [token required]
-- Update `/users/:user_id` [PUT] [token required] [body]
+- Update `/api/users/:user_id` **[PUT] [token required] [body]**
 ```json
 {
     "username":<string>,
     "firstname":<string>,
     "lastname":<string>,
-    "password":<string>
+    "password":<string>,
+    "role": 'admin' | 'user'
 }
 ```
-- Delete `/users/:user_id` [DELETE] [token required]
-- Refresh the Token `/users/authenticate` [POST] [body]
+- Delete `/api/users/:user_id` **[DELETE] [token required]**
+- Get a Token `/api/users/authenticate` **[POST] [body]**
 ```json
 {
     "username": <string>,
@@ -53,53 +54,75 @@
 ```
 
 ### Orders
-- Index `/orders` [GET]
-- Create `/orders` [POST] [token required] [body]
+- Index `/api/orders` **[GET]**
+- Show `/api/orders/:order_id` **[GET]**
+- Create `/api/orders` **[POST] [token required] [body]**
 ```json
 {
-    "product_id": <number>,
-	"quantity": <number>,
-	"user_id": <number>
+	"user_id": <number>,
+    "completed": <boolean>
 }
 ```
-- Show `/orders/:order_id` [GET] 
-- Update `/orders/:order_id` [PUT] [token required] [body]
+- Update `/api/orders/:order_id` **[PUT] [token required] [body]**
 ```json
 {
     "user_id": <number>,
-    "product_id": <number>,
-    "quantity": <number>,
-    "status": <"active" or "complete">
+    "completed": <boolean>
 }
 ```
-- Delete `/orders/:order_id` [DELETE] [token required] [body]
+- Delete `/api/orders/:order_id` **[DELETE] [token required]**
+
+### orders_products
+- Index `/api/ordersProducts` **[GET]**
+- Show `/api/ordersProducts/:orderProduct_id` **[GET]**
+- Create `/api/ordersProducts` **[POST] [token required] [body]**
 ```json
 {
-    "user_id":<number>
+	"order_id": <number>,
+	"product_id": <number>,
+	"quantity": <number>
 }
 ```
-### Dashboard
-- Current Order by user `/user_with_orders/:user_id` [GET] [token required]
+- Update `/api/ordersProducts/:orderProduct_id` **[PUT] [token required] [body]**
+```json
+{
+	"order_id": <number>,
+	"product_id": <number>,
+	"quantity": <number>
+}
+```
+- Delete `/api/ordersProducts/:orderProduct_id` **[DELETE] [token required]**
 
+- Get a list of the Current Orders completed or not `/api/ordersProducts/currentOrders/:orderProduct_id` **[GET] [token required] [body]**
+```json
+{
+	"completed": <boolean>,
+}
+```
 
 ## Data Shapes
 #### Product
-- id [PK] [SERIAL]
-- name [VARCHAR 200] [NOT NULL]
-- price [INTEGER] [NOT NULL]
-- category [VARCHAR 100]
+- id **[PK] [SERIAL]**
+- name **[VARCHAR 200] [NOT NULL]**
+- price **[NUMERIC]**
+- category **[VARCHAR 100]**
+- description **[TEXT]**
 
 #### User
-- id [PK] [SERIAL]
-- username [VARCHAR 100] [NOT NULL]
-- firstName [VARCHAR 50] [NOT NULL]
-- lastName [VARCHAR 50] [NOT NULL]
-- password [VARCHAR] 
+- id **[PK] [SERIAL]**
+- username **[VARCHAR 100] [NOT NULL]**
+- firstname **[VARCHAR 50]**
+- lastname **[VARCHAR 50]**
+- password **[VARCHAR] [NOT NULL]**
+- role **['admin' | 'user'] [NOT NULL] DEFAULT 'user'**
 
 #### Orders
-- id [PK] [SERIAL]
-- product_id [bigint] [NOT NULL] [REFERENCES Products.id]
-- quantity [INTEGER] [NOT NULL]
-- user_id [bigint] [NOT NULL] [REFERENCES Users.id]
-- status [VARCHAR 20] [NOT NULL]
+- id **[PK] [SERIAL]**
+- user_id **[INTEGER] [NOT NULL] [REFERENCES Users.id]**
+- completed **[BOOLEAN] [NOT NULL] DEFAULT FALSE**
 
+#### orders_products
+- id **[PK] [SERIAL]**
+- order_id **[INTEGER] [REFERENCES Orders.id]**
+- product_id **[INTEGER] [REFERENCES Products.id]**
+- quantity **[INTEGER] [NOT NULL]**

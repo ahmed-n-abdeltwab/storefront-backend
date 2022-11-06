@@ -16,8 +16,8 @@ POSTGRES_TEST_DB=shopping_test
 POSTGRES_USER=shopping_user
 POSTGRES_PASSWORD=password123
 ENV=dev
-TOKEN_SECRET=top-secret
-BCRYPT_PASSWORD=bcrypt-password
+TOKEN_SECRET="8x/A?D(Gr4u7x!A%WmZq4t7weThVmYq3KbPeSgVk*G-KaPdSz%C*F-Ja6w9z$C&Fp3s6v9y$UkXp2s5v"
+BCRYPT_PASSWORD="$2y$10$u20KvL1Q5AwOrUuSisXHTOjlbwVbTkpY3TtMhLAUDzGZ3HSwsIuaW"
 SALT_ROUNDS=10
 ```
 
@@ -29,7 +29,7 @@ docker-compose up -d
 ### you can connect to the database using this command.
 
 ```sh
-docker-compose exec db psql -U postgres 
+docker-compose exec postgres psql -U postgres 
 ```
 ### To migrate the database tables. Follow the steps below to run them.
 
