@@ -5,5 +5,5 @@ CREATE TABLE Users(
     firstname VARCHAR(50),
     lastname VARCHAR(50),
     password VARCHAR NOT NULL,
-    role user_role NOT NULL
+    role user_role NOT NULL DEFAULT 'user'
 );
