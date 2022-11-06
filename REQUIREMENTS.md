@@ -6,8 +6,8 @@
 ```json
 {
     "name": "<string>",
-	"price": "<number>",
-	"category": "<string>",
+    "price": "<number>",
+    "category": "<string>",
     "description": "<string>"
 }
 ```
@@ -15,8 +15,8 @@
 ```json
 {
     "name": "<string>",
-	"price": "<number>",
-	"category": "<string>",
+    "price": "<number>",
+    "category": "<string>",
     "description": "<string>"
 }
 ```
