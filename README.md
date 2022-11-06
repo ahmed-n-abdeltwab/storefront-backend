@@ -37,5 +37,6 @@ docker-compose exec postgres psql -U postgres
 * install db-migrate on the machine for terminal commands `npm install db-migrate -g`
 * install all project dependencies `yarn`
 * to run the migrations `db-migrate up`
-* to test that it is working, run `yarn watch` should show an app starting on `0.0.0.0:3000`
+* to test the project, run `yarn test`
+* to run the project, run `yarn watch` should show an app starting on `0.0.0.0:3000`
 
