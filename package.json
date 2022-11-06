@@ -8,7 +8,7 @@
     "build": "npx tsc",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
     "migrate": "db-migrate --env test up && db-migrate up",
-    "test": "db-migrate --env test reset -c 3 && db-migrate --env test up:all -c 3 && cross-env ENV=test jasmine-ts && db-migrate --env test down:all -c 3",
+    "test": "db-migrate --env test reset -c 4 && db-migrate --env test up:all -c 4 && cross-env ENV=test jasmine-ts && db-migrate --env test down:all -c 4",
     "tsc": "tsc",
     "prettier": "prettier --config .prettierrc src/**/* --write"
   },

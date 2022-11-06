@@ -1,5 +1,5 @@
-import { UserStore } from '../../models/user';
-import { User } from '../../types/user';
+import { UserStore } from '../../models/index';
+import { User } from '../../types/index';
 
 const store = new UserStore();
 
@@ -8,6 +8,7 @@ const user: User = {
 	firstname: 'test',
 	lastname: 'test',
 	password: 'test',
+	role: 'user',
 };
 
 let user_id: number;
@@ -35,33 +36,34 @@ describe('User Model', () => {
 
 	it('create method should add a user', async () => {
 		const result = await store.create(user);
-		user_id = result?.id ?? 2;
-		expect(result?.id).toEqual(user_id);
-		expect(result?.username).toEqual(user.username);
-		expect(result?.firstname).toEqual(user.firstname);
-		expect(result?.lastname).toEqual(user.lastname);
+		user.id = user_id = result?.id as number;
+		const { password: resultpassword, ...resultRest } = result;
+		const { password: userpassword, ...userRest } = user;
+		expect(resultRest).toEqual(userRest);
 	});
 
 	it('index method should return a list of users', async () => {
 		const result = await store.index();
-		expect(result[0]?.id).toEqual(user_id);
-		expect(result[0]?.username).toEqual(user.username);
-		expect(result[0]?.firstname).toEqual(user.firstname);
-		expect(result[0]?.lastname).toEqual(user.lastname);
+		const { password: userpassword, ...userRest } = user;
+		expect(
+			result.map((r) => {
+				const { password, ...resultRest } = r;
+				return resultRest;
+			})
+		).toContain(userRest);
 	});
 
 	it('show method should return the correct user', async () => {
 		const result = await store.show(user_id.toString());
-		expect(result?.id).toEqual(user_id);
-		expect(result?.username).toEqual(user.username);
-		expect(result?.firstname).toEqual(user.firstname);
-		expect(result?.lastname).toEqual(user.lastname);
+		const { password: resultpassword, ...resultRest } = result;
+		const { password: userpassword, ...userRest } = user;
+		expect(resultRest).toEqual(userRest);
 	});
 
 	it('delete method should remove the user', async () => {
-		await store.delete(user_id.toString());
-		const result = await store.index();
-
-		expect(result).toEqual([]);
+		const result = await store.delete(user_id.toString());
+		const { password: resultpassword, ...resultRest } = result;
+		const { password: userpassword, ...userRest } = user;
+		expect(resultRest).toEqual(userRest);
 	});
 });

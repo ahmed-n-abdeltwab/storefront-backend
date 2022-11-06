@@ -1,4 +1,4 @@
-import { authorization } from '../../middlewares/authorization.middleware';
+import { authorization } from '../../middlewares/index';
 describe('Authorization middleware', () => {
 	it('should have an authorization method', () => {
 		expect(authorization).toBeDefined();

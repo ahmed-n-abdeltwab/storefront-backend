@@ -1,6 +1,6 @@
-import errorMiddleware from '../../middlewares/error.middleware';
+import { error } from '../../middlewares/index';
 describe('Error middleware', () => {
 	it('should have an errorMiddleware method', () => {
-		expect(errorMiddleware).toBeDefined();
+		expect(error).toBeDefined();
 	});
 });
