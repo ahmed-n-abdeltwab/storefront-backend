@@ -5,9 +5,7 @@ import cors from 'cors';
 import routes from './routers/index';
 
 // import the middlewares
-import invalidPathHandler from './middlewares/not-found.middleware';
-import errorMiddleware from './middlewares/error.middleware';
-import loggerMiddleware from './middlewares/logger.middleware';
+import { notFound, error, logger } from './middlewares/index';
 
 const app: express.Application = express();
 const address: string = '0.0.0.0:3000';
@@ -16,15 +14,15 @@ app.use(express.json());
 app.use(cors());
 
 // logger
-app.use(loggerMiddleware);
+app.use(logger);
 
 app.get('/', function (_req: Request, res: Response) {
 	res.send('Hello World!');
 });
 
-app.use('api/', routes);
-app.use(errorMiddleware);
-app.use(invalidPathHandler);
+app.use('/api', routes);
+app.use(error);
+app.use(notFound);
 
 app.listen(3000, function () {
 	console.log(`starting app on: ${address}`);

@@ -5,7 +5,7 @@ const router = express.Router();
 // import the handlers
 import { index, show, create, destroy, update } from '../controllers/order';
 
-import { authentication } from '../middlewares/authentication.middleware';
+import { authentication } from '../middlewares/index';
 // route the handlers
 
 router.route('/').get(index).post(authentication, create);

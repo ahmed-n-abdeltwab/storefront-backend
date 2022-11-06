@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { ProductStore } from '../models/product';
-import { Product } from '../types/product';
+import { ProductStore } from '../models/index';
+import { Product } from '../types/index';
 import HttpException from '../errors/HttpException';
 
 const store = new ProductStore();
@@ -38,6 +38,7 @@ export const create = async (
 			name: req.body.name,
 			price: req.body.price,
 			category: req.body.category,
+			description: req.body.category,
 		};
 
 		const newProduct: Product = await store.create(product);
@@ -53,9 +54,11 @@ export const update = async (
 	next: NextFunction
 ) => {
 	const product: Product = {
+		id: parseInt(req.params.id),
 		name: req.body.name,
 		price: req.body.price,
 		category: req.body.category,
+		description: req.body.category,
 	};
 	try {
 		const updated: Product = await store.update(product);

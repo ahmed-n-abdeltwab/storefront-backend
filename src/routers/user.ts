@@ -13,8 +13,7 @@ import {
 } from '../controllers/user';
 
 // middlewares
-import { authorization } from '../middlewares/authorization.middleware';
-import { authentication } from '../middlewares/authentication.middleware';
+import { authorization, authentication } from '../middlewares/index';
 
 // routers
 router.route('/').get(authentication, authorization, index).post(create);

@@ -1,7 +1,7 @@
 // @ts-ignore
 import Pool from '../database';
 
-import { Product } from '../types/product';
+import { Product } from '../types/index';
 
 export class ProductStore {
 	async index(): Promise<Product[]> {

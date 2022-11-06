@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-import { UserStore } from '../models/user';
+import { UserStore } from '../models/index';
 
-import { User } from '../types/user';
+import { User } from '../types/index';
 
 import HttpException from '../errors/HttpException';
 
@@ -49,11 +49,7 @@ export const create = async (
 	};
 	try {
 		const newUser = await store.create(user);
-		const { password, ...rest }: User = newUser;
-		const token = jwt.sign({ user: rest }, token_secret, {
-			expiresIn: '1h',
-		});
-		res.status(201).json(token);
+		res.status(201).json(newUser);
 	} catch (error) {
 		next(new HttpException(400, (error as Error).message));
 	}
@@ -66,7 +62,7 @@ export const destroy = async (
 ) => {
 	try {
 		const deleted = await store.delete(req.params.id);
-		res.json(deleted);
+		res.status(200).json(deleted);
 	} catch (error) {
 		next(new HttpException(404, (error as Error).message));
 	}
@@ -106,7 +102,7 @@ export const authenticate = async (
 		const token = jwt.sign({ user: rest }, token_secret, {
 			expiresIn: '1h',
 		});
-		res.json(token);
+		res.status(200).json(token);
 	} catch (error) {
 		next(new HttpException(401, (error as Error).message));
 	}

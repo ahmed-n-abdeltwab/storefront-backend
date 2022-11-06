@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { OrderStore } from '../models/order';
+import { OrderStore } from '../models/index';
 
-import { OrderProduct, CurrentOrders } from '../types/order';
+import { OrderProduct, CurrentOrders } from '../types/index';
 
 import HttpException from '../errors/HttpException';
 
@@ -92,10 +92,10 @@ export const currentOrders = async (
 	next: NextFunction
 ) => {
 	try {
-		const isCompleted: boolean = req.body?.isCompleted ?? false;
+		const completed: boolean = req.body?.completed ?? false;
 		const orders: CurrentOrders[] = await store.currentOrders(
 			req.params.id,
-			isCompleted
+			completed
 		);
 		res.json({ orders, nbHits: orders.length });
 	} catch (error) {

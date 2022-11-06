@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt';
 const saltRounds = SALT_ROUNDS ?? '10';
 const pepper = BCRYPT_PASSWORD ?? 'secret password';
 
-import { User } from '../types/user';
+import { User } from '../types/index';
 
 export class UserStore {
 	async index(): Promise<User[]> {

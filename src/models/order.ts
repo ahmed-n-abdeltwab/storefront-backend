@@ -1,7 +1,7 @@
 // @ts-ignore
 import Pool from '../database';
 
-import { Order, CurrentOrders, OrderProduct } from '../types/order';
+import { Order, CurrentOrders, OrderProduct } from '../types/index';
 export class OrderStore {
 	async index(): Promise<Order[]> {
 		try {
@@ -45,14 +45,13 @@ export class OrderStore {
 
 	async create(order: Order): Promise<Order> {
 		try {
-			const sql =
-				'INSERT INTO Orders (user_id, isCompleted) VALUES($1, $2) RETURNING *';
+			const sql = `INSERT INTO Orders (user_id, completed) VALUES($1, $2) RETURNING *`;
 			// @ts-ignore
 			const conn = await Pool.connect();
 
 			const result = await conn.query(sql, [
 				order.user_id,
-				order.isCompleted,
+				order.completed,
 			]);
 
 			const newOrder: Order = result.rows[0];
@@ -67,13 +66,14 @@ export class OrderStore {
 	async update(order: Order): Promise<Order> {
 		try {
 			const sql =
-				'UPDATE Orders SET user_id=($1), isCompleted=($2) WHERE id=($3) RETURNING *';
+				'UPDATE Orders SET user_id=($1), completed=($2) WHERE id=($3) RETURNING *';
 			// @ts-ignore
 			const conn = await Pool.connect();
 
 			const result = await conn.query(sql, [
 				order.user_id,
-				order.isCompleted,
+				order.completed,
+				order.id,
 			]);
 			const newOrder: Order = result.rows[0];
 
@@ -107,7 +107,7 @@ export class OrderStore {
 	}
 	async currentOrders(
 		id: string,
-		isCompleted: boolean = false
+		completed: boolean = false
 	): Promise<CurrentOrders[]> {
 		try {
 			//@ts-ignore
@@ -117,9 +117,9 @@ export class OrderStore {
 			FROM orders_products op 
 			INNER JOIN Orders o ON o.id = op.order_id
 			INNER JOIN Products p ON p.id = op.product_id
-			WHERE user_id = ($1) AND isCompleted = ($2)`;
+			WHERE user_id = ($1) AND completed = ($2)`;
 
-			const result = await conn.query(sql, [id, isCompleted]);
+			const result = await conn.query(sql, [id, completed]);
 
 			conn.release();
 
@@ -188,7 +188,7 @@ export class OrderStore {
 
 			return newOrderProduct;
 		} catch (error) {
-			throw new Error((error as Error).message);
+			throw new Error('Order or Product is not found');
 		}
 	}
 	async updateProduct(orderProduct: OrderProduct): Promise<OrderProduct> {

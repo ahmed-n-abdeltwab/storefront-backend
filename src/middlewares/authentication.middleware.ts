@@ -17,7 +17,7 @@ export const authentication = (
 			next(new HttpException(400, 'the authorization Header is empty'));
 			return;
 		}
-		const token: string = authorizationHeader.split(' ')[1] ?? '';
+		const token: string = authorizationHeader.split(' ')[1];
 		const decoded: string | jwt.JwtPayload = jwt.verify(
 			token,
 			token_secret
@@ -25,6 +25,6 @@ export const authentication = (
 		res.locals.decoded = decoded;
 		next();
 	} catch (err) {
-		next(new HttpException(401, 'Access denied, invalid token'));
+		next(new HttpException(401, `Access denied, invalid token`));
 	}
 };

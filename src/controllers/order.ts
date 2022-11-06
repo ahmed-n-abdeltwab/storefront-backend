@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { OrderStore } from '../models/order';
+import { OrderStore } from '../models/index';
 
-import { Order } from '../types/order';
+import { Order } from '../types/index';
 
 import HttpException from '../errors/HttpException';
 
@@ -38,9 +38,10 @@ export const create = async (
 	try {
 		const order: Order = {
 			user_id: req.body.user_id,
+			completed: false,
 		};
 		const newOrder: Order = await store.create(order);
-		res.json(newOrder);
+		res.status(201).json(newOrder);
 	} catch (error) {
 		next(new HttpException(400, (error as Error).message));
 	}
@@ -54,7 +55,7 @@ export const update = async (
 	const order: Order = {
 		id: parseInt(req.params.id),
 		user_id: req.body.user_id,
-		isCompleted: req.body.isCompleted,
+		completed: req.body.completed,
 	};
 	try {
 		const updated: Order = await store.update(order);

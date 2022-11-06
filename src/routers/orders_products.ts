@@ -12,7 +12,7 @@ import {
 	updateProduct,
 } from '../controllers/orders_products';
 
-import { authentication } from '../middlewares/authentication.middleware';
+import { authentication } from '../middlewares/index';
 
 router.route('/').get(indexProduct).post(authentication, createProduct);
 
