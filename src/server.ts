@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
+import config from "config";
 
 // import the routes
 import routes from './routers/index';
@@ -8,7 +9,8 @@ import routes from './routers/index';
 import { notFound, error, logger } from './middlewares/index';
 
 const app: express.Application = express();
-const address: string = '0.0.0.0:3000';
+const port: number = config.get('server.port')
+const address: string = config.get('server.host')
 
 app.use(express.json());
 app.use(cors());
@@ -24,8 +26,8 @@ app.use('/api', routes);
 app.use(error);
 app.use(notFound);
 
-app.listen(3000, function () {
-	console.log(`starting app on: ${address}`);
+app.listen(port, address, () => {
+	console.log(`starting app on: http://${address}:${port}`);
 });
 
 export default app;
