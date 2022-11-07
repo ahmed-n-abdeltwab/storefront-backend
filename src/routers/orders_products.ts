@@ -14,14 +14,16 @@ import {
 
 import { authentication } from '../middlewares/index';
 
-router.route('/').get(indexProduct).post(authentication, createProduct);
+router.use(authentication)
+
+router.route('/').get(indexProduct).post(createProduct);
 
 router
 	.route('/:id')
-	.delete(authentication, deleteProduct)
-	.put(authentication, updateProduct)
+	.delete(deleteProduct)
+	.put(updateProduct)
 	.get(showProduct);
 
-router.route('/currentOrders/:id').get(authentication, currentOrders);
+router.route('/currentOrders/:id').get(currentOrders);
 
 export default router;
