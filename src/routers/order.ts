@@ -8,12 +8,12 @@ import { index, show, create, destroy, update } from '../controllers/order';
 import { authentication } from '../middlewares/index';
 // route the handlers
 
-router.route('/').get(index).post(authentication, create);
+router.route('/').get(authentication, index).post(authentication, create);
 
 router
 	.route('/:id')
 	.delete(authentication, destroy)
 	.put(authentication, update)
-	.get(show);
+	.get(authentication, show);
 
 export default router;
