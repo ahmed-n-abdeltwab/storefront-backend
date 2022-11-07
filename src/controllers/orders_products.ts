@@ -4,7 +4,7 @@ import { OrderStore } from '../models/index';
 
 import { OrderProduct, CurrentOrders } from '../types/index';
 
-import HttpException from '../errors/HttpException';
+import { HttpException } from '../errors/HttpException';
 
 const store = new OrderStore();
 
@@ -17,7 +17,7 @@ export const indexProduct = async (
 		const orderProduct: OrderProduct[] = await store.indexProduct();
 		res.json({ orderProduct, nbHits: orderProduct.length });
 	} catch (error) {
-		next(new HttpException(400, (error as Error).message));
+		next(error);
 	}
 };
 
@@ -30,9 +30,11 @@ export const showProduct = async (
 		const orderProduct: OrderProduct = await store.showProduct(
 			req.params.id
 		);
+		if (!orderProduct)
+			throw new HttpException(404, 'Order Product not found');
 		res.json(orderProduct);
 	} catch (error) {
-		next(new HttpException(400, (error as Error).message));
+		next(error);
 	}
 };
 
@@ -50,7 +52,7 @@ export const createProduct = async (
 		const newOrder: OrderProduct = await store.createProduct(order);
 		res.json(newOrder);
 	} catch (error) {
-		next(new HttpException(400, (error as Error).message));
+		next(error);
 	}
 };
 
@@ -67,9 +69,11 @@ export const updateProduct = async (
 	};
 	try {
 		const updated: OrderProduct = await store.updateProduct(order);
+		if (!updated) throw new HttpException(404, 'Order Product not found');
+
 		res.status(201).json(updated);
 	} catch (error) {
-		next(new HttpException(404, (error as Error).message));
+		next(error);
 	}
 };
 
@@ -80,9 +84,12 @@ export const deleteProduct = async (
 ) => {
 	try {
 		const deleted: OrderProduct = await store.deleteProduct(req.params.id);
+
+		if (!deleted) throw new HttpException(404, 'Order product not found');
+
 		res.json(deleted);
 	} catch (error) {
-		next(new HttpException(400, (error as Error).message));
+		next(error);
 	}
 };
 
@@ -99,6 +106,6 @@ export const currentOrders = async (
 		);
 		res.json({ orders, nbHits: orders.length });
 	} catch (error) {
-		next(new HttpException(400, (error as Error).message));
+		next(error);
 	}
 };

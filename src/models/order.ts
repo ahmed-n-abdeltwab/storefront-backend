@@ -17,9 +17,7 @@ export class OrderStore {
 
 			return orders;
 		} catch (error) {
-			throw new Error(
-				`Could not get orders. Error: ${(error as Error).message}`
-			);
+			throw new Error((error as Error).message);
 		}
 	}
 
@@ -34,8 +32,6 @@ export class OrderStore {
 			const order: Order = result.rows[0];
 
 			conn.release();
-
-			if (!order) throw new Error('Order not found');
 
 			return order;
 		} catch (error) {
@@ -79,8 +75,6 @@ export class OrderStore {
 
 			conn.release();
 
-			if (!newOrder) throw new Error('Order not found');
-
 			return newOrder;
 		} catch (error) {
 			throw new Error((error as Error).message);
@@ -97,8 +91,6 @@ export class OrderStore {
 			const order: Order = result.rows[0];
 
 			conn.release();
-
-			if (!order) throw new Error('Order not found');
 
 			return order;
 		} catch (error) {
@@ -127,7 +119,7 @@ export class OrderStore {
 
 			return orders;
 		} catch (error) {
-			throw new Error(`unable get Orders with user: ${error}`);
+			throw new Error((error as Error).message);
 		}
 	}
 	async indexProduct(): Promise<OrderProduct[]> {
@@ -144,9 +136,7 @@ export class OrderStore {
 
 			return orders;
 		} catch (error) {
-			throw new Error(
-				`Could not get orders. Error: ${(error as Error).message}`
-			);
+			throw new Error((error as Error).message);
 		}
 	}
 
@@ -161,8 +151,6 @@ export class OrderStore {
 			const order: OrderProduct = result.rows[0];
 
 			conn.release();
-
-			if (!order) throw new Error('Order Product not found');
 
 			return order;
 		} catch (error) {
@@ -188,7 +176,7 @@ export class OrderStore {
 
 			return newOrderProduct;
 		} catch (error) {
-			throw new Error('Order or Product is not found');
+			throw new Error((error as Error).message);
 		}
 	}
 	async updateProduct(orderProduct: OrderProduct): Promise<OrderProduct> {
@@ -208,8 +196,6 @@ export class OrderStore {
 
 			conn.release();
 
-			if (!newOrderProduct) throw new Error('Order Product not found');
-
 			return newOrderProduct;
 		} catch (error) {
 			throw new Error((error as Error).message);
@@ -226,8 +212,6 @@ export class OrderStore {
 			const orderProduct: OrderProduct = result.rows[0];
 
 			conn.release();
-
-			if (!orderProduct) throw new Error('Order product not found');
 
 			return orderProduct;
 		} catch (error) {

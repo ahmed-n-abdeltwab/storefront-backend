@@ -23,7 +23,7 @@ export class UserStore {
 
 			return users;
 		} catch (error) {
-			throw new Error(`Unable to get users: ${(error as Error).message}`);
+			throw new Error((error as Error).message);
 		}
 	}
 
@@ -38,8 +38,6 @@ export class UserStore {
 			const user: User = result.rows[0];
 
 			conn.release();
-
-			if (!user) throw new Error('User not found');
 
 			return user;
 		} catch (error) {
@@ -72,7 +70,7 @@ export class UserStore {
 
 			return user;
 		} catch (error) {
-			throw new Error(`The username is in used`);
+			throw new Error((error as Error).message);
 		}
 	}
 	async update(u: User): Promise<User> {
@@ -99,8 +97,6 @@ export class UserStore {
 
 			conn.release();
 
-			if (!user) throw new Error('User not found');
-
 			return user;
 		} catch (error) {
 			throw new Error((error as Error).message);
@@ -118,15 +114,13 @@ export class UserStore {
 
 			conn.release();
 
-			if (!user) throw new Error('User not found');
-
 			return user;
 		} catch (error) {
 			throw new Error((error as Error).message);
 		}
 	}
 
-	async authenticate(username: string, password: string): Promise<User> {
+	async authenticate(username: string): Promise<User> {
 		try {
 			const sql = 'SELECT * FROM Users WHERE username=($1)';
 			// @ts-ignore
@@ -137,11 +131,6 @@ export class UserStore {
 			const user: User = result.rows[0];
 
 			conn.release();
-
-			if (!user) throw new Error('User not found');
-
-			if (!bcrypt.compareSync(password + pepper, user.password))
-				throw new Error(`Wrong User`);
 
 			return user;
 		} catch (error) {

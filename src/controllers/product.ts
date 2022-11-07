@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 
 import { ProductStore } from '../models/index';
 import { Product } from '../types/index';
-import HttpException from '../errors/HttpException';
+import { HttpException } from '../errors/HttpException';
 
 const store = new ProductStore();
 
@@ -15,16 +15,17 @@ export const index = async (
 		const products: Product[] = await store.index();
 		res.json({ products, nbHits: products.length });
 	} catch (error) {
-		next(new HttpException(400, (error as Error).message));
+		next(error);
 	}
 };
 
 export const show = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const product: Product = await store.show(req.params.id);
+		if (!product) throw new HttpException(404, 'Product not found');
 		res.status(200).json(product);
 	} catch (error) {
-		next(new HttpException(404, (error as Error).message));
+		next(error);
 	}
 };
 
@@ -40,11 +41,10 @@ export const create = async (
 			category: req.body.category,
 			description: req.body.category,
 		};
-
 		const newProduct: Product = await store.create(product);
 		res.status(201).json(newProduct);
 	} catch (error) {
-		next(new HttpException(400, (error as Error).message));
+		next(error);
 	}
 };
 
@@ -53,18 +53,19 @@ export const update = async (
 	res: Response,
 	next: NextFunction
 ) => {
-	const product: Product = {
-		id: parseInt(req.params.id),
-		name: req.body.name,
-		price: req.body.price,
-		category: req.body.category,
-		description: req.body.category,
-	};
 	try {
+		const product: Product = {
+			id: parseInt(req.params.id),
+			name: req.body.name,
+			price: req.body.price,
+			category: req.body.category,
+			description: req.body.description,
+		};
 		const updated: Product = await store.update(product);
+		if (!updated) throw new HttpException(404, 'Product not found');
 		res.status(201).json(updated);
 	} catch (error) {
-		next(new HttpException(404, (error as Error).message));
+		next(error);
 	}
 };
 
@@ -75,8 +76,9 @@ export const destroy = async (
 ) => {
 	try {
 		const deleted: Product = await store.delete(req.params.id);
+		if (!deleted) throw new Error('Product not found');
 		res.status(200).json(deleted);
 	} catch (error) {
-		next(new HttpException(400, (error as Error).message));
+		next(error);
 	}
 };

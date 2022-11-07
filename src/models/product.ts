@@ -18,9 +18,7 @@ export class ProductStore {
 
 			return products;
 		} catch (error) {
-			throw new Error(
-				`Could not get products. Error: ${(error as Error).message}`
-			);
+			throw new Error((error as Error).message);
 		}
 	}
 
@@ -35,8 +33,6 @@ export class ProductStore {
 			const product: Product = result.rows[0];
 
 			conn.release();
-
-			if (!product) throw new Error('Product not found');
 
 			return product;
 		} catch (error) {
@@ -64,11 +60,7 @@ export class ProductStore {
 
 			return product;
 		} catch (error) {
-			throw new Error(
-				`Could not add new product ${p.name}. Error: ${
-					(error as Error).message
-				}`
-			);
+			throw new Error((error as Error).message);
 		}
 	}
 	async update(product: Product): Promise<Product> {
@@ -89,8 +81,6 @@ export class ProductStore {
 
 			conn.release();
 
-			if (!newProduct) throw new Error('Product not found');
-
 			return newProduct;
 		} catch (error) {
 			throw new Error((error as Error).message);
@@ -107,8 +97,6 @@ export class ProductStore {
 			const product: Product = result.rows[0];
 
 			conn.release();
-
-			if (!product) throw new Error('Product not found');
 
 			return product;
 		} catch (error) {

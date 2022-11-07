@@ -13,14 +13,21 @@ import {
 } from '../controllers/user';
 
 // middlewares
-import { authorization, authentication } from '../middlewares/index';
+import {
+	authorization,
+	authentication,
+	InputUserValidation,
+} from '../middlewares/index';
 
 // routers
-router.route('/').get(authentication, authorization, index).post(create);
+router
+	.route('/')
+	.get(authentication, authorization, index)
+	.post(InputUserValidation, create);
 router
 	.route('/:id')
 	.get(authentication, authorization, show)
-	.put(authentication, authorization, update)
+	.put(authentication, authorization, InputUserValidation, update)
 	.delete(authentication, authorization, destroy);
 router.route('/authenticate').post(authenticate);
 

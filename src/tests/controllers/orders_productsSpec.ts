@@ -104,7 +104,6 @@ describe('Orders Products Controller', () => {
 			.send(orderProductObj)
 			.set(commonHeaders);
 		orderProduct_id = response.body.id;
-
 		expect(response.status).toEqual(200);
 	});
 	it('should respond with status 200 at route /api/ordersProducts [GET]', async () => {

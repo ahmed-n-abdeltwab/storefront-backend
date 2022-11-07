@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
-import HttpException from '../errors/HttpException';
+import { HttpException } from '../errors/HttpException';
 import { TOKEN_SECRET } from '../utils/environment';
 
 const token_secret = TOKEN_SECRET ?? 'top secret';
