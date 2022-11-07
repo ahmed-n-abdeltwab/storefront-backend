@@ -40,3 +40,6 @@ docker-compose exec postgres psql -U postgres
 * to test the project, run `yarn test`
 * to run the project, run `yarn watch` should show an app starting on `0.0.0.0:3000`
 
+### Ports
+* Database on `5432`.
+* Backend on `3000`.
